@@ -2,9 +2,15 @@
 
 set -e
 
+# Requires $PRISON_WEBROOT_URL to be set in the environment, to the AWS CLI
+# s3:// URL to the bucket and object to overwrite.
+#
+# eg., PRISON_WEBROOT_S3_URL=s3://mybucketname/webroot.tar.gz
+
 cd /srv/www
-echo "Building source tarball..."
-tar -czf /appsrc/webroot.tar.gz ./
+  echo "Building source tarball..."
+  tar -czf /tmp/webroot.tar.gz ./
+  aws s3 cp /tmp/webroot.tar.gz "$PRISON_WEBROOT_S3_URL"
 cd -
 
 echo "Source update is complete. You will need to restart any still-running containers"

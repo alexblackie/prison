@@ -2,17 +2,19 @@
 
 set -e
 
-if ! [ -f "/appsrc/webroot.tar.gz" ] ; then
+if [ "$PRISON_WEBROOT_S3_URL" = "" ] ; then
   echo "--[ ERROR ]"
   echo
-  echo "No webroot found at '/appsrc/webroot.tar.gz'. Make sure this file exists and is"
-  echo "a gzip'ed tarball of the webroot files you want extracted into the container."
+  echo "You must set the environment variable PRISON_WEBROOT_S3_URL to be a full S3"
+  echo "path to the webroot tarball. eg., 's3://mybucketname/webroot.tar.gz'"
   echo
   exit 1
 fi
 
 echo "Extracting webroot..."
-tar -xzf /appsrc/webroot.tar.gz -C /srv/www
+aws s3 cp "$PRISON_WEBROOT_S3_URL" /tmp/webroot.tar.gz
+tar -xzf /tmp/webroot.tar.gz -C /srv/www
+rm /tmp/webroot.tar.gz
 chown -R apache:www-data /srv/www
 
 echo "Starting httpd..."

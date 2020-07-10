@@ -2,6 +2,7 @@ FROM alpine:3.12
 
 RUN apk add --no-cache --update \
     rsync curl \
+    aws-cli \
     apache2 apache2-utils \
     php7-apache2 \
     php7-cli \
