@@ -5,6 +5,8 @@ RUN apk add --no-cache --update \
     apache2 apache2-utils \
     php7-apache2 \
     php7-cli \
+    php7-posix \
+    php7-apcu \
     php7-phar \
     php7-zlib \
     php7-zip \
@@ -32,6 +34,7 @@ RUN apk add --no-cache --update \
     php7-xmlwriter
 
 ADD ./httpd.conf /etc/apache2/httpd.conf
+ADD ./php.ini /etc/php7/conf.d/03_prison.ini
 
 RUN mkdir -p /srv/www
 
