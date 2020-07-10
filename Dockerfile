@@ -30,6 +30,8 @@ RUN apk add --no-cache --update \
 
 ADD ./httpd.conf /etc/apache2/httpd.conf
 
+RUN mkdir -p /srv/www
+
 ADD ./prison-update-source /usr/bin/prison-update-source
 ADD ./prison-start /usr/bin/prison-start
 RUN chmod +x /usr/bin/prison-update-source /usr/bin/prison-start
