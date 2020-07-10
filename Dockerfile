@@ -15,6 +15,7 @@ RUN apk add --no-cache --update \
     php7-pdo_pgsql \
     php7-mysqli \
     php7-pgsql \
+    php7-redis \
     php7-json \
     php7-mcrypt \
     php7-xml \
