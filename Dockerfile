@@ -27,7 +27,9 @@ RUN apk add --no-cache --update \
     php7-mbstring \
     php7-opcache \
     php7-tokenizer \
-    php7-simplexml
+    php7-simplexml \
+    php7-xmlreader \
+    php7-xmlwriter
 
 ADD ./httpd.conf /etc/apache2/httpd.conf
 
