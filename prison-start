@@ -1,0 +1,21 @@
+#!/bin/sh
+
+set -e
+
+if ! [ -e "/appsrc" ] ; then
+  echo "!!!!!!!!!!!"
+  echo "!! ERROR !!"
+  echo "!!!!!!!!!!!"
+  echo
+  echo "Did not find an '/appsrc' directory. You are required to provide the source"
+  echo "code at that mount point so it can be copied into the container."
+  echo
+  exit 1
+fi
+
+/usr/bin/rsync -r /appsrc/ /srv/www/
+chown -R apache:www-data /srv/www
+echo "Source restoration is complete."
+
+echo "Starting httpd..."
+/usr/sbin/httpd -D FOREGROUND -f /etc/apache2/httpd.conf

@@ -1,0 +1,6 @@
+#!/bin/sh
+
+set -e
+
+rsync -a /srv/www/ /appsrc/
+echo "Source update is complete."
