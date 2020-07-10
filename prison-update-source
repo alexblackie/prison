@@ -2,5 +2,5 @@
 
 set -e
 
-rsync -a /srv/www/ /appsrc/
+rsync -a --delete /srv/www/ /appsrc/
 echo "Source update is complete."
