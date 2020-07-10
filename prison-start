@@ -2,20 +2,18 @@
 
 set -e
 
-if ! [ -e "/appsrc" ] ; then
-  echo "!!!!!!!!!!!"
-  echo "!! ERROR !!"
-  echo "!!!!!!!!!!!"
+if ! [ -f "/appsrc/webroot.tar.gz" ] ; then
+  echo "--[ ERROR ]"
   echo
-  echo "Did not find an '/appsrc' directory. You are required to provide the source"
-  echo "code at that mount point so it can be copied into the container."
+  echo "No webroot found at '/appsrc/webroot.tar.gz'. Make sure this file exists and is"
+  echo "a gzip'ed tarball of the webroot files you want extracted into the container."
   echo
   exit 1
 fi
 
-/usr/bin/rsync -r /appsrc/ /srv/www/
+echo "Extracting webroot..."
+tar -xzf /appsrc/webroot.tar.gz -C /srv/www
 chown -R apache:www-data /srv/www
-echo "Source restoration is complete."
 
 echo "Starting httpd..."
 /usr/sbin/httpd -D FOREGROUND -f /etc/apache2/httpd.conf

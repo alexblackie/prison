@@ -2,5 +2,10 @@
 
 set -e
 
-rsync -a --delete /srv/www/ /appsrc/
-echo "Source update is complete."
+cd /srv/www
+echo "Building source tarball..."
+tar -czf /appsrc/webroot.tar.gz ./
+cd -
+
+echo "Source update is complete. You will need to restart any still-running containers"
+echo "for them to pick up the new webroot."
