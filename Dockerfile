@@ -27,6 +27,8 @@ RUN apk add --no-cache --update \
     php7-session \
     php7-intl \
     php7-gd \
+    php7-pecl-imagick \
+    php7-fileinfo \
     php7-mbstring \
     php7-opcache \
     php7-tokenizer \
