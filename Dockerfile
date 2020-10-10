@@ -34,7 +34,9 @@ RUN apk add --no-cache --update \
     php7-tokenizer \
     php7-simplexml \
     php7-xmlreader \
-    php7-xmlwriter
+    php7-xmlwriter \
+    php7-gmp \
+    php7-bcmath
 
 ADD ./httpd.conf /etc/apache2/httpd.conf
 ADD ./php.ini /etc/php7/conf.d/03_prison.ini
