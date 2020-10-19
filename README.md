@@ -14,6 +14,18 @@ then you can just `prison-update-source` and it'll create a new tarball and
 upload it back to S3, thereby updating the source so you can just reboot the
 containers.
 
+## Usage
+
+The Docker container is hosted on Github Packages.
+
+```
+$ docker pull docker.pkg.github.com/alexblackie/prison/prison:10
+```
+
+See **Configuration** below for details on the environment variables you have to
+set. The container just runs Apache HTTPD, so it is available in the container
+on port `80`.
+
 ## Configuration
 
 A few environment variables need to be set:
