@@ -2,17 +2,21 @@
 
 set -e
 
-if [ "$PRISON_WEBROOT_S3_URL" = "" ] ; then
+if [ "$AZURE_STORAGE_WEBROOT_URL" = "" ] ; then
   echo "--[ ERROR ]"
   echo
-  echo "You must set the environment variable PRISON_WEBROOT_S3_URL to be a full S3"
-  echo "path to the webroot tarball. eg., 's3://mybucketname/webroot.tar.gz'"
+  echo "You must set AZURE_STORAGE_WEBROOT_URL to the full URL to the webroot tarball in Azure "
+  echo "Storage, suffixed with a valid Shared Access Signature (SAS)."
+  echo
+  echo "    e.g., 'https://<account>.blob.core.windows.net/<container>/webroot.tar.gz?<sas>'"
   echo
   exit 1
 fi
 
+echo "Downloading webroot..."
+azcopy "$AZURE_STORAGE_WEBROOT_URL" /tmp/webroot.tar.gz
+
 echo "Extracting webroot..."
-aws s3 cp "$PRISON_WEBROOT_S3_URL" /tmp/webroot.tar.gz
 tar -xzf /tmp/webroot.tar.gz -C /srv/www
 rm /tmp/webroot.tar.gz
 chown -R apache:www-data /srv/www

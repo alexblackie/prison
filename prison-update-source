@@ -2,15 +2,23 @@
 
 set -e
 
-# Requires $PRISON_WEBROOT_URL to be set in the environment, to the AWS CLI
-# s3:// URL to the bucket and object to overwrite.
-#
-# eg., PRISON_WEBROOT_S3_URL=s3://mybucketname/webroot.tar.gz
+if [ "$AZURE_STORAGE_WEBROOT_URL" = "" ] ; then
+  echo "--[ ERROR ]"
+  echo
+  echo "You must set AZURE_STORAGE_WEBROOT_URL to the full URL to the webroot tarball in Azure "
+  echo "Storage, suffixed with a valid Shared Access Signature (SAS)."
+  echo
+  echo "    e.g., 'https://<account>.blob.core.windows.net/<container>/webroot.tar.gz?<sas>'"
+  echo
+  exit 1
+fi
 
 cd /srv/www
   echo "Building source tarball..."
   tar -czf /tmp/webroot.tar.gz ./
-  aws s3 cp /tmp/webroot.tar.gz "$PRISON_WEBROOT_S3_URL"
+
+  echo "Uploading source tarball..."
+  azcopy copy /tmp/webroot.tar.gz "$AZURE_STORAGE_WEBROOT_URL"
 cd -
 
 echo "Source update is complete. You will need to restart any still-running containers"

@@ -2,7 +2,6 @@ FROM alpine:3.12
 
 RUN apk add --no-cache --update \
     rsync curl \
-    aws-cli \
     apache2 apache2-utils \
     php7-apache2 \
     php7-cli \
@@ -36,7 +35,13 @@ RUN apk add --no-cache --update \
     php7-xmlreader \
     php7-xmlwriter \
     php7-gmp \
-    php7-bcmath
+    php7-bcmath \
+    # for azcopy:
+    libc6-compat && \
+    curl -SLo /tmp/azcopy.tar.gz "https://azcopyvnext.azureedge.net/release20201106/azcopy_linux_amd64_10.7.0.tar.gz" && \
+    tar -xf /tmp/azcopy.tar.gz --strip-components=1 -C /usr/bin && \
+    chmod +x /usr/bin/azcopy && rm -f /tmp/azcopy.tar.gz
+
 
 ADD ./httpd.conf /etc/apache2/httpd.conf
 ADD ./php.ini /etc/php7/conf.d/03_prison.ini

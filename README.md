@@ -4,9 +4,9 @@ This is a containerized attempt of getting legacy-ridden PHP apps to run in a cl
 
 I originally built this to run Nextcloud on Kubernetes, a topic [you can read more about on my blog][0].
 
-Basically, it is assumed you have modified the app to be able to run at least mostly without mutating the disk. Then you place a tarball of the app webroot in an S3 bucket, and configure it in the env as `PRISON_WEBROOT_S3_URL=s3://mybucketname/webroot.tar.gz`. This tarball will be downloaded and extracted to the container's webroot on container boot.
+Basically, it is assumed you have modified the app to be able to run at least mostly without mutating the disk. Then you place a tarball of the app webroot in an Azure Storage account. This tarball will be downloaded and extracted to the container's webroot on container boot.
 
-If you make changes inside a container, say running some inline updater, then you can just `prison-update-source` and it'll create a new tarball and upload it back to S3, thereby updating the source so you can just reboot the containers.
+If you make changes inside a container, say running some inline updater, then you can just `prison-update-source` and it'll create a new tarball and upload it back to the Azure Storage account container, thereby updating the source so you can just reboot the containers.
 
 [0]: https://www.alexblackie.com/articles/nextcloud-on-k8s/
 
@@ -15,17 +15,22 @@ If you make changes inside a container, say running some inline updater, then yo
 The Docker container is hosted on Github Packages.
 
 ```
-$ docker pull docker.pkg.github.com/alexblackie/prison/prison:10
+$ docker pull docker.pkg.github.com/alexblackie/prison/prison:11
 ```
 
 See **Configuration** below for details on the environment variables you have to set. The container just runs Apache HTTPD, so it is available in the container on port `80`.
 
 ## Configuration
 
-A few environment variables need to be set:
+A single environment variable must be set: `AZURE_STORAGE_WEBROOT_URL`. This must be a full URL to the webroot tarball in Azure Storage, appended with a valid Shared Access Signature (SAS).
 
-- `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` to auth to AWS
-- `PRISON_WEBROOT_S3_URL` to specify the object in S3 to use and/or write
+For example (with sensitive values removed):
+
+```
+AZURE_STORAGE_WEBROOT_URL="https://<account>.blob.core.windows.net/<container>/webroot.tar.gz?sv=2019-12-12&ss=b&srt=co&sp=rwdlac&se=<end>&st=<start>&spr=https&sig=<sig>"
+```
+
+You can generate a SAS for your storage account from the "Shared access signature" section of its settings in the Azure Portal. Ensure you set a reasonable expiry date, and rotate regularly as you would any sensitive credential.
 
 ## A note on file permissions
 
