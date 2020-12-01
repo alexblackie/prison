@@ -14,7 +14,7 @@ if [ "$AZURE_STORAGE_WEBROOT_URL" = "" ] ; then
 fi
 
 echo "Downloading webroot..."
-azcopy "$AZURE_STORAGE_WEBROOT_URL" /tmp/webroot.tar.gz
+azcopy copy "$AZURE_STORAGE_WEBROOT_URL" /tmp/webroot.tar.gz
 
 echo "Extracting webroot..."
 tar -xzf /tmp/webroot.tar.gz -C /srv/www
