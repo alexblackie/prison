@@ -15,7 +15,7 @@ If you make changes inside a container, say running some inline updater, then yo
 The Docker container is hosted on Github Packages.
 
 ```
-$ docker pull docker.pkg.github.com/alexblackie/prison/prison:11
+$ docker pull docker.pkg.github.com/alexblackie/prison/prison:12
 ```
 
 See **Configuration** below for details on the environment variables you have to set. The container just runs Apache HTTPD, so it is available in the container on port `80`.
