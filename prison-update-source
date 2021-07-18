@@ -13,6 +13,8 @@ if [ "$AZURE_STORAGE_WEBROOT_URL" = "" ] ; then
   exit 1
 fi
 
+export AZCOPY_BUFFER_GB=0.03
+
 cd /srv/www
   echo "Building source tarball..."
   tar -czf /tmp/webroot.tar.gz ./
